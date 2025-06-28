@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Cecy HATS SHOP - Productos</title>
+  <style>
+    body {
+      background-image: url('https://img.freepik.com/fotos-premium/cielo-oscuro-lleno-nubes-antes-lluvia_221513-4778.jpg');
+      background-size: cover;
+      background-position: center;
+      background-attachment: fixed;
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+    }
+
+    header, footer {
+      background-color: black;
+      color: white;
+      text-align: center;
+      padding: 1rem;
+    }
+
+    header img {
+      height: 80px;
+      vertical-align: middle;
+    }
+
+    header h1 {
+      display: inline-block;
+      margin-left: 1rem;
+      vertical-align: middle;
+    }
+
+    nav {
+      background-color: rgba(0, 0, 0, 0.7);
+      text-align: center;
+      padding: 0.5rem;
+    }
+
+    nav a {
+      color: white;
+      margin: 0 1rem;
+      text-decoration: none;
+      font-weight: bold;
+    }
+
+    .container {
+      display: flex;
+      flex-direction: column;
+      gap: 2rem;
+      padding: 2rem;
+    }
+
+    .product {
+      display: flex;
+      background-color: rgba(255, 255, 255, 0.95);
+      border-radius: 10px;
+      overflow: hidden;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+      flex-wrap: wrap;
+    }
+
+    .product img {
+      width: 300px;
+      object-fit: cover;
+    }
+
+    .product-details {
+      flex: 1;
+      padding: 1rem 1.5rem;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+
+    .product-details h3 {
+      margin: 0;
+    }
+
+    .product-details p {
+      margin: 0.5rem 0;
+    }
+
+    .price {
+      color: #e91e63;
+      font-size: 1.4rem;
+      font-weight: bold;
+    }
+
+    .controls {
+      margin-top: 1rem;
+      display: flex;
+      gap: 1rem;
+      align-items: center;
+    }
+
+    .controls input[type="number"] {
+      width: 60px;
+      padding: 0.3rem;
+      font-size: 1rem;
+    }
+
+    .btn {
+      background-color: #e91e63;
+      color: white;
+      border: none;
+      padding: 0.5rem 1rem;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+
+    @media (max-width: 768px) {
+      .product {
+        flex-direction: column;
+        align-items: center;
+      }
+
+      .product img {
+        width: 100%;
+      }
+
+      .product-details {
+        padding: 1rem;
+      }
+
+      .controls {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <img src="logo/cecy12.png" alt="Logo Cecy HATS">
+    <h1>Cecy HATS SHOP</h1>
+    <p>¡Descubre nuestros increíbles productos!</p>
+  </header>
+
+  <nav>
+    <a href="index.html">Inicio</a>
+    <a href="productos.html">Productos</a>
+    <a href="carrito.html">Ver Carrito</a>
+  </nav>
+
+  <main class="container">
+
+    <div class="product">
+      <img src="https://664shop.com/wp-content/uploads/2025/03/77-Barbas-H-24k-Web-664-600x402.jpg" alt="77 – Barbas Hats">
+      <div class="product-details">
+        <h3>77 – Barbas Hats</h3>
+        
+        <p class="price">$2,200.00</p>
+        <div class="controls">
+          <label for="cantidad1">Cantidad:</label>
+          <input type="number" id="cantidad1" min="1" value="1">
+          <button class="btn" onclick="agregarAlCarrito('77 – Barbas Hats', 2200, 'cantidad1')">Añadir al carrito</button>
+        </div>
+      </div>
+    </div>
+
+  </main>
+
+  <footer>
+    <p>&copy; 2025 Cecy HATS. Todos los derechos reservados.</p>
+  </footer>
+
+  <script>
+    function agregarAlCarrito(nombre, precio, cantidadId) {
+      const cantidad = parseInt(document.getElementById(cantidadId).value);
+      if (isNaN(cantidad) || cantidad < 1) {
+        alert("Por favor, ingresa una cantidad válida.");
+        return;
+      }
+
+      let carrito = JSON.parse(localStorage.getItem('carrito')) || [];
+
+      const productoExistente = carrito.find(p => p.nombre === nombre);
+
+      if (productoExistente) {
+        productoExistente.cantidad += cantidad;
+      } else {
+        carrito.push({ nombre, precio, cantidad });
+      }
+
+      localStorage.setItem('carrito', JSON.stringify(carrito));
+      alert(`Se añadieron ${cantidad} "${nombre}" al carrito.`);
+    }
+  </script>
+
+</body>
+</html>

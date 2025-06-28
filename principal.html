@@ -1,0 +1,157 @@
+<!DOCTYPE html> <!-- Define el tipo de documento como HTML5 -->
+<html lang="es"> <!-- Establece el idioma del documento como español -->
+
+<head>
+  <meta charset="UTF-8" /> <!-- Codificación para admitir caracteres especiales -->
+  <meta name="viewport" content="width=device-width, initial-scale=1" /> <!-- Hace el sitio web adaptable a móviles -->
+  <title>Cecy HATS SHOP - Productos</title> <!-- Título que se muestra en la pestaña del navegador -->
+
+  <style>
+    /* Estilo general del cuerpo de la página */
+    body {
+      background-image: url('https://img.freepik.com/fotos-premium/cielo-oscuro-lleno-nubes-antes-lluvia_221513-4778.jpg'); /* Imagen de fondo */
+      background-size: cover; /* La imagen cubre toda la pantalla */
+      background-position: center; /* Centra la imagen */
+      background-attachment: fixed; /* Fija la imagen al hacer scroll */
+      font-family: Arial, sans-serif; /* Fuente principal */
+      margin: 0;
+      padding: 0;
+    }
+
+    /* Encabezado y pie de página */
+    header, footer {
+      background-color: black; /* Fondo negro */
+      color: white; /* Texto blanco */
+      text-align: center; /* Centrado horizontal */
+      padding: 1rem; /* Espaciado interno */
+    }
+
+    /* Imagen del logo en el encabezado */
+    header img {
+      height: 80px; /* Altura del logo */
+      vertical-align: middle; /* Alineado verticalmente con el texto */
+    }
+
+    /* Título de la tienda en el encabezado */
+    header h1 {
+      display: inline-block;
+      margin-left: 1rem;
+      vertical-align: middle;
+    }
+
+    /* Barra de navegación */
+    nav {
+      background-color: rgba(0, 0, 0, 0.7); /* Fondo negro semitransparente */
+      text-align: center;
+      padding: 0.5rem;
+    }
+
+    /* Enlaces del menú */
+    nav a {
+      color: white;
+      margin: 0 1rem;
+      text-decoration: none; /* Sin subrayado */
+      font-weight: bold; /* Texto en negrita */
+    }
+
+    /* Contenedor principal de productos */
+    .container {
+      display: grid; /* Usamos grid para distribuir productos */
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); /* Columnas flexibles según espacio */
+      gap: 2rem; /* Espacio entre productos */
+      padding: 2rem; /* Espaciado interno */
+    }
+
+    /* Tarjeta de cada producto */
+    .product {
+      background-color: rgba(255, 255, 255, 0.9); /* Fondo blanco semitransparente */
+      border-radius: 10px; /* Bordes redondeados */
+      padding: 1rem;
+      text-align: center;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2); /* Sombra para resaltar */
+      transition: transform 0.2s; /* Transición suave al hacer hover */
+    }
+
+    /* Efecto al pasar el mouse */
+    .product:hover {
+      transform: scale(1.02); /* Agrandar ligeramente */
+    }
+
+    /* Imagen del producto */
+    .product img {
+      max-width: 100%; /* Imagen se adapta al ancho del contenedor */
+      border-radius: 10px; /* Bordes redondeados */
+    }
+
+    /* Precio del producto */
+    .price {
+      color: #e91e63; /* Color rosa fuerte */
+      font-size: 1.2rem; /* Tamaño más grande */
+      margin: 0.5rem 0;
+    }
+
+    /* Estilo para los enlaces de cada tarjeta */
+    .product a {
+      color: inherit; /* Mantiene el color del texto actual */
+      text-decoration: none; /* Sin subrayado */
+      display: block; /* Ocupa todo el contenedor */
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- Encabezado del sitio -->
+  <header>
+    <img src="logo/cecy12.png" alt="Logo Cecy HATS"> <!-- Logo de la tienda -->
+    <h1>Cecy HATS SHOP</h1> <!-- Título de la tienda -->
+    <p>¡Descubre nuestros increíbles productos!</p> <!-- Subtítulo o promoción -->
+  </header>
+
+  <!-- Menú de navegación -->
+  <nav>
+    <a href="principal.html">Inicio</a>
+    <a href="productos.html">Productos</a>
+    <a href="carrito.html">Ver Carrito</a>
+    <!-- Este enlace tiene el mismo texto que el anterior, podrías cambiarlo a "Finalizar Compra" -->
+  </nav>
+
+  <!-- Contenedor principal de productos -->
+  <main class="container">
+
+    <!-- Producto 1 -->
+    <div class="product">
+      <a href="ANGEL – REBEL HATS.html">
+        <img src="https://664shop.com/wp-content/uploads/2025/05/REBEL-Caps-Gorra-1-Web-664-768x515.jpg" alt="ANGEL – REBEL HATS">
+        <h3>ANGEL – REBEL HATS</h3>
+        <p class="price">$1,300.00</p>
+      </a>
+    </div>
+
+    <!-- Producto 2 -->
+    <div class="product">
+      <a href="NEW YORK – BORN TO BE REBEL – REBEL HATS.html">
+        <img src="https://664shop.com/wp-content/uploads/2025/05/REBEL-Caps-Gorra-3-Web-664-600x402.jpg" alt="NEW YORK – BORN TO BE REBEL – REBEL HATS">
+        <h3>NEW YORK – BORN TO BE REBEL – REBEL HATS</h3>
+        <p class="price">$1,300.00</p>
+      </a>
+    </div>
+
+    <!-- Producto 3 -->
+    <div class="product">
+      <a href="REBEL HEARTS – REBEL HATS.html">
+        <img src="https://664shop.com/wp-content/uploads/2025/05/REBEL-Caps-Gorra-2-Web-664-600x402.jpg" alt="REBEL HEARTS – REBEL HATS">
+        <h3>REBEL HEARTS – REBEL HATS</h3>
+        <p class="price">$1,300.00</p>
+      </a>
+    </div>
+
+  </main>
+
+  <!-- Pie de página -->
+  <footer>
+    <p>&copy; 2025 Cecy HATS. Todos los derechos reservados.</p>
+  </footer>
+
+</body>
+</html>

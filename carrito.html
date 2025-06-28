@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Cecy HATS SHOP - Carrito</title>
+  <script src="https://cdn.jsdelivr.net/npm/jsbarcode@3.11.6/dist/JsBarcode.all.min.js"></script>
+  <style>
+    body {
+      background-color: #f4f4f4;
+      font-family: 'Segoe UI', sans-serif;
+      margin: 0; padding: 0;
+    }
+    header, footer {
+      background-color: #000;
+      color: #fff;
+      text-align: center;
+      padding: 1rem;
+    }
+    header img { height: 70px; vertical-align: middle; }
+    header h1 { display: inline-block; margin-left: 1rem; vertical-align: middle; font-weight: 500; }
+    nav { background: rgba(0,0,0,0.85); text-align: center; padding: 0.5rem; }
+    nav a { color: #fff; margin: 0 1rem; text-decoration: none; font-weight: 500; }
+    .container {
+      max-width: 800px; margin: 2rem auto;
+      background: #fff; padding: 2rem; border-radius: 12px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+    }
+    .item { border-bottom: 1px solid #ddd; padding: 1rem 0; }
+    .total { text-align: right; font-size: 1.2rem; font-weight: bold; margin-top: 1rem; }
+    .btn {
+      background: #e91e63; color: #fff; border: none;
+      padding: 0.6rem 1.2rem; border-radius: 6px; cursor: pointer;
+      font-size: 1rem; margin: 0.5rem; transition: background 0.3s;
+    }
+    .btn:hover { background: #d81b60; }
+    .actions { text-align: right; margin-top: 2rem; }
+    .modal {
+      display: none; position: fixed; z-index: 9999; left: 0; top: 0;
+      width: 100%; height: 100%; background: rgba(0,0,0,0.6);
+      justify-content: center; align-items: center;
+    }
+    .modal-content {
+      background: #fff; padding: 2rem; border-radius: 10px;
+      width: 90%; max-width: 400px; position: relative;
+      animation: fadeIn 0.3s ease-in-out;
+    }
+    @keyframes fadeIn { from {opacity: 0; transform: scale(0.9);} to {opacity: 1; transform: scale(1);} }
+    .modal-content h3 { margin-bottom: 1rem; }
+    .modal-content select, .modal-content input {
+      width: 90%; padding: 0.5rem; margin: 0.5rem 0;
+      border-radius: 5px; border: 1px solid #ccc; font-size: 1rem;
+    }
+    .close-btn {
+      position: absolute; top: 10px; right: 15px; cursor: pointer;
+      font-size: 1.5rem; color: #333;
+    }
+    .barcode-container { margin-top: 1rem; text-align: center; }
+    .barcode-container svg { background: #fff; padding: 0.5rem; }
+  </style>
+</head>
+<body>
+
+<header>
+  <img src="logo/cecy12.png" alt="Logo Cecy HATS">
+  <h1>Cecy HATS SHOP</h1>
+</header>
+
+<nav>
+  <a href="principal.html">Inicio</a>
+  <a href="productos.html">Productos</a>
+  <a href="carrito.html">Ver Carrito</a>
+</nav>
+
+<div class="container">
+  <h2>Tu Carrito</h2>
+  <div id="lista-carrito"></div>
+  <div class="total" id="total"></div>
+  <div class="actions">
+    <button class="btn" onclick="vaciarCarrito()">Vaciar Carrito</button>
+    <button class="btn" onclick="abrirModal()">Comprar</button>
+  </div>
+</div>
+
+<div class="modal" id="pagoModal">
+  <div class="modal-content">
+    <span class="close-btn" onclick="cerrarModal()">&times;</span>
+    <h3>Selecciona tu método de pago</h3>
+    <select id="metodoPago" onchange="mostrarCampos()">
+      <option value="">Selecciona un método</option>
+      <option value="transferencia">Transferencia Bancaria</option>
+      <option value="tarjeta">Pago con Tarjeta</option>
+      <option value="oxxo">Pago en OXXO</option>
+    </select>
+    <div id="camposPago"></div>
+    <div class="barcode-container" id="barcodeContainer" style="display:none;">
+      <svg id="barcode"></svg>
+      <p>Presenta este código en OXXO para realizar tu pago</p>
+    </div>
+    <button class="btn" onclick="procesarPago()">Confirmar Pago</button>
+  </div>
+</div>
+
+<section style="background: rgba(0,0,0,0.85); color: #fff; padding: 2rem; text-align: center;">
+  <h2>Contáctanos</h2>
+  <p><strong>Email:</strong> contacto@cecyhats.com<br><strong>Teléfono:</strong> +52 123 456 7890</p>
+</section>
+
+<footer>
+  <p>&copy; 2025 Cecy HATS. Todos los derechos reservados.</p>
+</footer>
+
+<script>
+let carrito = JSON.parse(localStorage.getItem('carrito')) || [];
+const lista = document.getElementById('lista-carrito');
+const totalDiv = document.getElementById('total');
+const barcodeContainer = document.getElementById('barcodeContainer');
+let total = 0;
+
+function mostrarCarrito() {
+  lista.innerHTML = "";
+  total = 0;
+  if (carrito.length === 0) {
+    lista.innerHTML = "<p>Tu carrito está vacío.</p>";
+    totalDiv.textContent = "Total: $0.00";
+  } else {
+    carrito.forEach(item => {
+      total += item.precio * item.cantidad;
+      const div = document.createElement('div');
+      div.classList.add('item');
+      div.innerHTML = `<strong>${item.nombre}</strong><br>
+      Precio: $${item.precio.toFixed(2)} x ${item.cantidad} = $${(item.precio * item.cantidad).toFixed(2)}`;
+      lista.appendChild(div);
+    });
+    totalDiv.textContent = `Total: $${total.toFixed(2)}`;
+  }
+}
+
+function vaciarCarrito() {
+  if (confirm("¿Deseas vaciar el carrito?")) {
+    localStorage.removeItem('carrito');
+    carrito = [];
+    mostrarCarrito();
+  }
+}
+
+function abrirModal() {
+  if (carrito.length === 0) {
+    alert("Tu carrito está vacío.");
+    return;
+  }
+  document.getElementById('pagoModal').style.display = 'flex';
+}
+
+function cerrarModal() {
+  document.getElementById('pagoModal').style.display = 'none';
+  document.getElementById('camposPago').innerHTML = '';
+  document.getElementById('metodoPago').value = '';
+  barcodeContainer.style.display = 'none';
+}
+
+function mostrarCampos() {
+  const metodo = document.getElementById('metodoPago').value;
+  const campos = document.getElementById('camposPago');
+  campos.innerHTML = '';
+  barcodeContainer.style.display = 'none';
+
+  if (metodo === 'transferencia') {
+    campos.innerHTML = `
+      <p>Banco: BBVA<br>Cuenta: 1234567890<br>CLABE: 012345678901234567<br>Titular: Cecy HATS SHOP</p>
+      <input type="text" id="nombreTitular" placeholder="Tu nombre">
+      <input type="file" id="comprobantePago" accept="image/*">
+      <small>Adjunta tu comprobante de pago</small>
+    `;
+  } else if (metodo === 'tarjeta') {
+    campos.innerHTML = `
+      <input type="text" id="numeroTarjeta" placeholder="Número de tarjeta (16 dígitos)">
+      <input type="text" id="nombreTarjeta" placeholder="Nombre del titular">
+      <input type="text" id="fechaExpiracion" placeholder="MM/AA">
+      <input type="text" id="cvv" placeholder="CVV">
+    `;
+  } else if (metodo === 'oxxo') {
+    const codigo = 'OXXO' + Math.floor(Math.random() * 1000000000);
+    JsBarcode("#barcode", codigo, {format: "CODE128", width: 2, height: 60, displayValue: true});
+    barcodeContainer.style.display = 'block';
+    const fechaHoy = new Date();
+    fechaHoy.setDate(fechaHoy.getDate() + 3);
+    const fechaVencimiento = fechaHoy.toLocaleDateString();
+    campos.innerHTML = `
+      <p>Folio de pago: <strong>${codigo}</strong><br>
+      Vence: ${fechaVencimiento}<br>
+      Monto a pagar: <strong>$${total.toFixed(2)}</strong></p>
+      <input type="text" id="nombreCliente" placeholder="Tu nombre">
+    `;
+  }
+}
+
+function procesarPago() {
+  const metodo = document.getElementById('metodoPago').value;
+  if (!metodo) { alert("Selecciona un método de pago."); return; }
+
+  if (metodo === 'transferencia' && !document.getElementById('nombreTitular').value) {
+    alert("Ingresa tu nombre para validar el pago.");
+    return;
+  }
+  if (metodo === 'tarjeta' && (!document.getElementById('numeroTarjeta').value || !document.getElementById('nombreTarjeta').value ||
+      !document.getElementById('fechaExpiracion').value || !document.getElementById('cvv').value)) {
+    alert("Completa todos los campos de la tarjeta.");
+    return;
+  }
+  if (metodo === 'oxxo' && !document.getElementById('nombreCliente').value) {
+    alert("Ingresa tu nombre para el recibo de OXXO.");
+    return;
+  }
+
+  alert("Procesando tu pago, por favor espera...");
+  setTimeout(() => {
+    localStorage.removeItem('carrito');
+    carrito = [];
+    mostrarCarrito();
+    cerrarModal();
+    alert("¡Gracias por tu compra! Te hemos enviado un correo de confirmación.");
+    window.location.href = 'gracias.html';
+  }, 2000);
+}
+
+mostrarCarrito();
+</script>
+
+</body>
+</html>
